@@ -1,76 +1,519 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#103d36">
-  <meta name="description" content="生命系统的数学：一座由学生独立制作、献给邬荣领教授的非官方学术致敬网站。从功能作图到复杂网络，交互探索生长、遗传与统计学。">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="zh_CN">
-  <meta property="og:title" content="邬荣领 Rongling Wu · 生命系统的数学">
-  <meta property="og:description" content="从基因到网络，从数据到规律。探索生长轨迹与相互作用的独立学术致敬作品。">
-  <meta property="og:image" content="assets/social.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="color-scheme" content="light">
-  <title>邬荣领 Rongling Wu · 生命系统的数学</title>
-  <link rel="icon" type="image/svg+xml" href="assets/mark.svg">
-  <link rel="stylesheet" href="assets/styles.css">
-  <script type="module" src="assets/app.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04110e">
+<meta name="description" content="生命系统的数学：一座由学生独立制作、献给邬荣领教授的非官方学术致敬网站。从功能作图到复杂网络，交互探索生长、遗传与统计学。">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="邬荣领 Rongling Wu · 生命系统的数学">
+<meta property="og:description" content="从基因到网络，从数据到规律。探索生长轨迹与相互作用的独立学术致敬作品。">
+<meta property="og:image" content="assets/social.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<title>邬荣领 Rongling Wu · 生命系统的数学</title>
+<link rel="icon" type="image/svg+xml" href="assets/mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#04110e; --ink2:#082019; --line:rgba(111,214,180,.16);
+  --jade:#6fd6b4; --jade2:#c4f2e2; --sky:#7fc3e6; --amber:#e8b86d; --coral:#ee8a72;
+  --text:#e5efe9; --dim:#7c9289;
+  --serif:"Noto Serif SC","Songti SC","STSong",serif;
+  --latin:"Cormorant Garamond","Times New Roman",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:var(--serif);font-weight:300;line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:var(--jade2)}
+::selection{background:var(--jade);color:var(--ink)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--jade);color:var(--ink);padding:6px 12px;z-index:99}
+.skip:focus{left:8px}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:22px clamp(20px,5vw,64px);mix-blend-mode:difference}
+nav .mark{font-family:var(--latin);letter-spacing:.32em;font-size:13px;color:#fff;text-transform:uppercase;text-decoration:none}
+nav ul{display:flex;gap:28px;list-style:none}
+nav a{color:#fff;text-decoration:none;font-size:13px;letter-spacing:.2em;opacity:.75;transition:opacity .3s}
+nav a:hover{opacity:1}
+@media(max-width:820px){nav ul{display:none}}
+
+/* hero */
+.hero{position:relative;height:100vh;min-height:640px;overflow:hidden}
+#growth{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:pan-y}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 60% 48%,transparent 32%,rgba(4,17,14,.6) 72%,var(--ink) 100%)}
+.hero-text{position:absolute;left:clamp(20px,7vw,110px);bottom:clamp(60px,14vh,150px);z-index:2;pointer-events:none;max-width:600px}
+.tag{display:inline-block;font-size:11px;letter-spacing:.3em;color:var(--jade);border:1px solid var(--line);padding:5px 12px;margin-bottom:28px;background:rgba(4,17,14,.55)}
+.hero h1{font-weight:900;font-size:clamp(64px,11vw,148px);line-height:1;letter-spacing:.06em;background:linear-gradient(180deg,#f2fff9 0%,var(--jade) 62%,#2f7d68 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .latin{font-family:var(--latin);font-style:italic;font-size:clamp(22px,3vw,34px);color:var(--jade2);margin:14px 0 22px;letter-spacing:.04em}
+.hero p.sub{color:var(--dim);font-size:15px;letter-spacing:.14em}
+.caption{position:absolute;right:clamp(20px,5vw,64px);bottom:34px;z-index:2;text-align:right;font-size:11px;color:var(--dim);letter-spacing:.14em;line-height:2}
+.caption b{color:var(--jade);font-weight:500}
+.legend{display:flex;gap:16px;justify-content:flex-end;margin-top:6px}
+.legend i{display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:6px}
+.scroll{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:2;width:1px;height:56px;background:linear-gradient(var(--jade),transparent);animation:drip 2.4s ease-in-out infinite}
+@keyframes drip{0%{transform:translateX(-50%) scaleY(0);transform-origin:top}50%{transform:translateX(-50%) scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:translateX(-50%) scaleY(0);transform-origin:bottom}}
+@media(max-width:760px){.caption{display:none}}
+
+section{position:relative;padding:clamp(90px,14vh,160px) clamp(20px,7vw,110px)}
+.kicker{font-family:var(--latin);letter-spacing:.4em;font-size:12px;color:var(--jade);text-transform:uppercase;margin-bottom:18px}
+h2{font-weight:700;font-size:clamp(34px,5vw,60px);letter-spacing:.08em;line-height:1.3;margin-bottom:48px}
+h2 em{font-style:normal;color:var(--jade)}
+.lead{color:#b4c4bd;font-size:16px;max-width:36em;margin:-24px 0 46px}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1.2s cubic-bezier(.2,.7,.2,1),transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.reveal.on{opacity:1;transform:none}
+
+.epigraph{text-align:center;padding:clamp(120px,22vh,240px) 20px}
+.epigraph blockquote{font-size:clamp(26px,3.6vw,46px);font-weight:300;letter-spacing:.14em;line-height:2}
+.epigraph blockquote span{color:var(--jade)}
+.epigraph .en{font-family:var(--latin);font-style:italic;color:var(--dim);font-size:clamp(18px,2vw,24px);margin-top:20px;letter-spacing:.04em}
+.epigraph .rule{width:1px;height:90px;background:linear-gradient(transparent,var(--jade),transparent);margin:50px auto 0}
+
+/* portrait */
+.portrait{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:clamp(30px,6vw,100px);padding-top:clamp(30px,6vh,70px);min-height:100vh}
+.pframe{position:relative;aspect-ratio:2/3;max-height:90vh;width:100%;max-width:560px;justify-self:center}
+.pframe img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;display:block;will-change:transform}
+#phyllo{position:absolute;z-index:1;left:50%;top:36%;width:150%;aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none}
+.ptext h2{margin-bottom:34px;line-height:1.5}
+.ptext p{color:#b4c4bd;font-size:16px;margin-bottom:18px;max-width:30em}
+.aff{margin:30px 0 0;border-top:1px solid var(--line)}
+.aff div{display:flex;justify-content:space-between;gap:20px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
+.aff dd{color:var(--jade);font-size:13px;letter-spacing:.08em;text-align:right}
+.sig{font-family:var(--latin);font-style:italic;font-size:44px;color:var(--jade);margin-top:30px;opacity:.85}
+@media(max-width:900px){.portrait{grid-template-columns:1fr}.pframe{max-width:420px}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat{padding:48px 24px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat .n{font-family:var(--latin);font-size:clamp(48px,6vw,84px);font-weight:300;color:var(--jade2);line-height:1}
+.stat .l{margin-top:14px;font-size:14px;color:var(--dim);letter-spacing:.1em}
+@media(max-width:860px){.stats{grid-template-columns:1fr 1fr}.stat:nth-child(2){border-right:none}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+
+/* experiment */
+.lab{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(24px,4vw,60px);align-items:center}
+.lab canvas{width:100%;aspect-ratio:16/10;display:block;border:1px solid var(--line);background:linear-gradient(180deg,rgba(111,214,180,.03),transparent)}
+.ctrl label{display:block;font-size:13px;color:var(--dim);letter-spacing:.14em;margin:22px 0 8px}
+.ctrl input[type=range]{width:100%;accent-color:var(--jade)}
+.readout{margin-top:26px;border-top:1px solid var(--line)}
+.readout div{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-family:var(--latin);font-size:22px}
+.readout span:first-child{font-family:var(--serif);font-size:14px;color:var(--dim)}
+.verdict{margin-top:22px;min-height:3.6em;font-size:15px;color:var(--jade2);transition:color .4s}
+.verdict.same{color:var(--amber)}
+.eq{font-family:var(--latin);font-size:22px;color:var(--jade2);margin-top:14px}
+.fine{font-size:12px;color:#5f746c;letter-spacing:.08em;margin-top:16px}
+@media(max-width:900px){.lab{grid-template-columns:1fr}}
+
+/* network */
+.netwrap{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(24px,4vw,60px);align-items:center}
+#net{width:100%;aspect-ratio:4/3;display:block;cursor:pointer}
+.ninfo h3{font-size:26px;font-weight:700;letter-spacing:.06em}
+.ninfo .layer{font-family:var(--latin);letter-spacing:.3em;font-size:12px;color:var(--jade);text-transform:uppercase}
+.ninfo ul{list-style:none;margin-top:18px;border-top:1px solid var(--line)}
+.ninfo li{padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px;display:flex;justify-content:space-between}
+.pos{color:var(--jade)} .neg{color:var(--coral)}
+@media(max-width:900px){.netwrap{grid-template-columns:1fr}}
+
+/* atlas */
+.atlas{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.cell{background:var(--ink);padding:42px 34px 38px;position:relative;overflow:hidden;transition:background .6s}
+.cell:hover{background:var(--ink2)}
+.cell::after{content:"";position:absolute;left:0;top:0;height:2px;width:0;background:var(--jade);transition:width .8s}
+.cell:hover::after{width:100%}
+.cell .no{font-family:var(--latin);color:var(--jade);letter-spacing:.2em;font-size:13px}
+.cell h3{font-size:22px;font-weight:700;letter-spacing:.06em;margin:12px 0 2px}
+.cell .en{font-family:var(--latin);font-style:italic;color:var(--dim);font-size:16px}
+.cell .q{font-family:var(--latin);font-size:22px;color:var(--jade2);margin:24px 0 20px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center;white-space:nowrap;overflow-x:auto}
+.cell p{font-size:14.5px;color:#b4c4bd}
+.cell a{display:inline-block;margin-top:14px;font-size:13px;letter-spacing:.1em;text-decoration:none;border-bottom:1px solid var(--line)}
+.cell.yau{background:linear-gradient(135deg,rgba(232,184,109,.08),var(--ink) 60%)}
+.cell.yau .no,.cell.yau a{color:var(--amber)}
+
+@media(max-width:1000px){.atlas{grid-template-columns:1fr 1fr}}@media(max-width:640px){.atlas{grid-template-columns:1fr}}
+/* works */
+.works{list-style:none;border-top:1px solid var(--line)}
+.works li{display:grid;grid-template-columns:110px 1fr auto;gap:28px;align-items:baseline;padding:28px 0;border-bottom:1px solid var(--line);transition:padding .4s}
+.works li:hover{padding-left:12px}
+.works .yr{font-family:var(--latin);font-size:34px;color:var(--jade);line-height:1}
+.works h3{font-size:18px;font-weight:500;font-family:var(--latin);font-size:21px;line-height:1.4}
+.works .au{font-size:13.5px;color:var(--dim);margin-top:6px}
+.works .au b{color:var(--text);font-weight:500}
+.works .jr{font-size:13.5px;color:#a7b8b1;font-style:italic;font-family:var(--latin);font-size:16px}
+.works a.go{font-size:12px;letter-spacing:.2em;text-decoration:none;color:var(--jade);border:1px solid var(--line);padding:6px 12px;white-space:nowrap}
+.works .pre{font-size:10px;letter-spacing:.2em;color:var(--ink);background:var(--amber);padding:1px 7px;margin-left:8px;font-family:var(--serif);font-style:normal;vertical-align:middle}
+@media(max-width:700px){.works li{grid-template-columns:1fr;gap:8px}}
+
+/* timeline */
+.timeline{position:relative;max-width:1100px;margin:0 auto}
+.timeline::before{content:"";position:absolute;left:150px;top:0;bottom:0;width:1px;background:var(--line)}
+.ev{display:grid;grid-template-columns:150px 1fr;padding:26px 0;position:relative}
+.ev .y{font-family:var(--latin);font-size:34px;color:var(--jade);line-height:1.2;padding-right:40px;text-align:right}
+.ev .d{padding-left:44px;position:relative}
+.ev .d::before{content:"";position:absolute;left:-6px;top:12px;width:11px;height:11px;border:1px solid var(--jade);background:var(--ink);border-radius:50%}
+.ev.major .d::before{background:var(--jade);box-shadow:0 0 18px var(--jade)}
+.ev h3{font-weight:500;font-size:21px;letter-spacing:.06em}
+.ev p{color:var(--dim);font-size:15px;margin-top:4px}
+@media(max-width:700px){.timeline::before{left:8px}.ev{grid-template-columns:1fr}.ev .y{text-align:left;padding:0 0 4px 34px;font-size:28px}.ev .d{padding-left:34px}.ev .d::before{left:3px}}
+
+/* explore */
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.links a{border:1px solid var(--line);padding:26px 24px;text-decoration:none;color:var(--text);display:flex;justify-content:space-between;align-items:flex-end;gap:12px;transition:border-color .4s,transform .4s}
+.links a:hover{border-color:var(--jade);transform:translateY(-4px)}
+.links small{display:block;font-family:var(--latin);letter-spacing:.24em;color:var(--jade);font-size:11px;margin-bottom:8px}
+.links .arr{color:var(--jade);font-size:18px}
+
+footer{padding:60px clamp(20px,7vw,110px);border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;font-size:12px;color:var(--dim);letter-spacing:.1em;line-height:2}
+footer a{color:var(--jade)}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.scroll{animation:none}}
+</style>
 </head>
 <body>
-<a class="skip-link" href="#main">跳至正文</a>
-<header class="site-header">
-  <a class="brand" href="#home" aria-label="邬荣领学术致敬网站首页"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 29C13 29 10 10 20 10S27 29 36 29M4 21C14 21 13 16 20 16S27 21 36 21"/><circle cx="20" cy="20" r="17"/></svg><span>RONGLING WU<small>邬荣领 · 学术致敬</small></span></a>
-  <nav class="desktop-nav" aria-label="主要导航"><a href="#experiment">动态之中</a><a href="#interactions">相互之间</a><a href="#atlas">研究图谱</a><a href="#works">精选论文</a><a href="#scholar">学者</a></nav>
-  <div class="header-tools"><button class="motion-control interactive" type="button" aria-pressed="false" title="暂停自动扫描与入场动画"><span class="motion-icon" aria-hidden="true">Ⅱ</span><span class="motion-label">暂停动效</span></button><details class="mobile-menu"><summary>目录 <span aria-hidden="true">＋</span></summary><nav aria-label="移动端导航"><a href="#experiment">02 · 动态之中</a><a href="#interactions">03 · 相互之间</a><a href="#atlas">04 · 研究图谱</a><a href="#works">05 · 精选论文</a><a href="#journey">06 · 学术行旅</a><a href="#scholar">07 · 学者</a><a href="#explore">08 · 继续探索</a></nav></details></div>
-  <div class="reading-progress" aria-hidden="true"></div>
+<a class="skip" href="#man">跳至正文</a>
+<nav>
+  <a class="mark" href="#top">Rongling · Wu</a>
+  <ul>
+    <li><a href="#man">其人</a></li>
+    <li><a href="#lab">动态</a></li>
+    <li><a href="#network">网络</a></li>
+    <li><a href="#atlas">图谱</a></li>
+    <li><a href="#works">论文</a></li>
+    <li><a href="#journey">行旅</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="growth" aria-label="可旋转的生长轨迹景观：三组基因型的个体生长曲线（合成数据）"></canvas>
+  <div class="hero-text">
+    <span class="tag">致敬作品 · DEMO</span>
+    <h1>邬荣领</h1>
+    <div class="latin">Rongling Wu</div>
+    <p class="sub">生命系统的数学 · 从基因到网络，从数据到规律</p>
+  </div>
+  <div class="caption">
+    <b>功能作图 · 示意</b> · Functional Mapping<br>
+    三种基因型下个体生长轨迹的景观（合成数据）<br>
+    拖动旋转
+    <div class="legend"><span><i style="background:var(--jade)"></i>AA</span><span><i style="background:var(--sky)"></i>Aa</span><span><i style="background:var(--amber)"></i>aa</span></div>
+  </div>
+  <div class="scroll"></div>
 </header>
-<main id="main">
-<section class="hero" id="home" aria-labelledby="hero-title">
-  <div class="hero-topline"><span class="eyebrow">01 / THE LIVING SYSTEM</span><span class="edition">AN INDEPENDENT ACADEMIC TRIBUTE</span></div>
-  <div class="hero-copy"><p class="hero-pre">献给邬荣领教授 · Rongling Wu</p><h1 id="hero-title">生命系统<br>的<span class="accent-word">数学<svg viewBox="0 0 280 30" preserveAspectRatio="none" aria-hidden="true"><path d="M3 22Q125 2 274 12"/></svg></span></h1><p class="hero-english">The Mathematics<br>of <em>Living Systems.</em></p><p class="hero-subtitle">从基因到网络，从数据到规律。</p><a class="round-link hero-link" href="#experiment"><span>进入动态的世界</span><span class="circle-arrow" aria-hidden="true">↘</span></a></div>
-  <figure class="hero-art"><img class="hero-fallback" src="assets/growth-study.svg" alt="原创数学图版：不同假设速率的 S 形生长曲线组成一张空间曲面" width="900" height="760"><canvas id="living-canvas" aria-label="可调速率的 Logistic 曲线族空间投影；第三轴代表假设参数" role="img" hidden></canvas><div class="art-tag"><i></i> A STUDY IN GROWTH<span>y(t) = K / (1 + e<sup>−r(t−t₀)</sup>)</span></div><div class="art-coordinate coord-one" aria-hidden="true">PHENOTYPE<br>↑</div><div class="art-coordinate coord-two" aria-hidden="true">TIME →</div><figcaption class="art-foot"><span class="figure-number">FIG. 01</span><span>每一道曲线，都是一种可能的生长。<br><small>概念演示 / Illustrative model — not empirical data</small></span></figcaption></figure>
-  <div class="hero-bottom"><span class="hero-research">APPLIED STATISTICS <i>×</i> MATHEMATICAL BIOLOGY</span><label class="hero-parameter interactive" for="hero-rate"><span>改变生长速率 <i>r</i></span><input id="hero-rate" type="range" min="0.3" max="1.8" step="0.01" value="0.9"><output for="hero-rate" id="hero-rate-value">0.90</output></label><span class="scroll-cue">向下探索 <span aria-hidden="true">↓</span></span></div>
-</section>
-<section class="prologue paper section-pad" aria-labelledby="prologue-title"><div class="margin-note"><span class="tiny-label">A WAY OF SEEING</span><span class="note-line"></span><span>生长 / 时间 / 关系</span></div><div><p class="prologue-en">Life is a process.<br><em>Understanding it is a journey.</em></p><h2 id="prologue-title">生命的复杂，<br>藏在变化与联系之中。</h2><p class="prologue-body">一个时刻的测量，是生命的切片。连续的轨迹，让发育的节奏浮现；相互作用的网络，则让我们看见，部分如何共同构成整体。这座网站以可探索的数学图景，走近邬荣领教授及其合作者的研究世界。</p><p class="editorial-note">本站主题与导语为原创编辑性文案，并非教授本人引语。</p></div></section>
 
-<section class="experiment paper section-pad" id="experiment" aria-labelledby="experiment-title">
-  <div class="chapter-heading"><span class="chapter-number">02</span><span class="eyebrow">BEYOND A SINGLE OBSERVATION</span><span class="section-index">TIME / t</span></div>
-  <div class="section-title-row"><h2 id="experiment-title">一个点，<br>能讲完生长的故事吗？</h2><p>功能作图 <span class="latin">Functional Mapping</span><br>从「此刻有多高」，走向「如何生长」。</p></div>
-  <div class="experiment-layout"><figure class="growth-figure"><div class="figure-toolbar"><span class="tiny-label">GROWTH TRAJECTORIES</span><div class="segmented interactive" role="group" aria-label="观察模式"><button type="button" data-view="snapshot" aria-pressed="false">单个时刻</button><button type="button" data-view="trajectory" aria-pressed="true">完整轨迹</button></div></div><svg id="growth-plot" viewBox="0 0 700 440" role="img" aria-labelledby="plot-title plot-desc"><title id="plot-title">同点异轨迹：三条 Logistic 生长曲线</title><desc id="plot-desc">三条曲线在 t=5 时均为 50，但生长速率不同。调节速率与观测时间，比较单点测量和完整轨迹。</desc><g class="plot-grid"><path d="M64 70H658M64 150H658M64 230H658M64 310H658M64 390H658"/><path d="M64 70V390M182.8 70V390M301.6 70V390M420.4 70V390M539.2 70V390M658 70V390"/></g><g class="plot-labels"><text x="64" y="32">表型值（无量纲）</text><text x="30" y="75">100</text><text x="38" y="235">50</text><text x="44" y="395">0</text><text x="64" y="420">0</text><text x="357" y="420">5</text><text x="645" y="420">10</text><text x="520" y="32">时间 t（无量纲）</text></g><g id="curve-paths" fill="none" stroke-width="2.6"><path id="curve-a" stroke="#416b57" d="M64.00,365.73 L68.95,364.77 L73.90,363.79 L78.85,362.77 L83.80,361.71 L88.75,360.62 L93.70,359.49 L98.65,358.32 L103.60,357.11 L108.55,355.86 L113.50,354.57 L118.45,353.23 L123.40,351.86 L128.35,350.43 L133.30,348.97 L138.25,347.45 L143.20,345.89 L148.15,344.28 L153.10,342.62 L158.05,340.92 L163.00,339.16 L167.95,337.35 L172.90,335.50 L177.85,333.59 L182.80,331.62 L187.75,329.61 L192.70,327.54 L197.65,325.42 L202.60,323.25 L207.55,321.02 L212.50,318.74 L217.45,316.40 L222.40,314.01 L227.35,311.57 L232.30,309.08 L237.25,306.53 L242.20,303.94 L247.15,301.29 L252.10,298.60 L257.05,295.85 L262.00,293.06 L266.95,290.22 L271.90,287.34 L276.85,284.41 L281.80,281.44 L286.75,278.43 L291.70,275.39 L296.65,272.30 L301.60,269.19 L306.55,266.04 L311.50,262.86 L316.45,259.65 L321.40,256.42 L326.35,253.17 L331.30,249.90 L336.25,246.61 L341.20,243.30 L346.15,239.99 L351.10,236.66 L356.05,233.33 L361.00,230.00 L365.95,226.67 L370.90,223.34 L375.85,220.01 L380.80,216.70 L385.75,213.39 L390.70,210.10 L395.65,206.83 L400.60,203.58 L405.55,200.35 L410.50,197.14 L415.45,193.96 L420.40,190.81 L425.35,187.70 L430.30,184.61 L435.25,181.57 L440.20,178.56 L445.15,175.59 L450.10,172.66 L455.05,169.78 L460.00,166.94 L464.95,164.15 L469.90,161.40 L474.85,158.71 L479.80,156.06 L484.75,153.47 L489.70,150.92 L494.65,148.43 L499.60,145.99 L504.55,143.60 L509.50,141.26 L514.45,138.98 L519.40,136.75 L524.35,134.58 L529.30,132.46 L534.25,130.39 L539.20,128.38 L544.15,126.41 L549.10,124.50 L554.05,122.65 L559.00,120.84 L563.95,119.08 L568.90,117.38 L573.85,115.72 L578.80,114.11 L583.75,112.55 L588.70,111.03 L593.65,109.57 L598.60,108.14 L603.55,106.77 L608.50,105.43 L613.45,104.14 L618.40,102.89 L623.35,101.68 L628.30,100.51 L633.25,99.38 L638.20,98.29 L643.15,97.23 L648.10,96.21 L653.05,95.23 L658.00,94.27"/><path id="curve-b" stroke="#b76a51" d="M64.00,389.71 L68.95,389.67 L73.90,389.63 L78.85,389.59 L83.80,389.54 L88.75,389.48 L93.70,389.41 L98.65,389.34 L103.60,389.26 L108.55,389.17 L113.50,389.07 L118.45,388.95 L123.40,388.82 L128.35,388.68 L133.30,388.51 L138.25,388.33 L143.20,388.12 L148.15,387.89 L153.10,387.63 L158.05,387.34 L163.00,387.02 L167.95,386.65 L172.90,386.24 L177.85,385.79 L182.80,385.27 L187.75,384.70 L192.70,384.05 L197.65,383.33 L202.60,382.53 L207.55,381.63 L212.50,380.62 L217.45,379.50 L222.40,378.25 L227.35,376.85 L232.30,375.30 L237.25,373.57 L242.20,371.66 L247.15,369.53 L252.10,367.18 L257.05,364.58 L262.00,361.71 L266.95,358.56 L271.90,355.09 L276.85,351.29 L281.80,347.14 L286.75,342.62 L291.70,337.72 L296.65,332.42 L301.60,326.70 L306.55,320.57 L311.50,314.01 L316.45,307.05 L321.40,299.68 L326.35,291.93 L331.30,283.82 L336.25,275.39 L341.20,266.67 L346.15,257.72 L351.10,248.58 L356.05,239.32 L361.00,230.00 L365.95,220.68 L370.90,211.42 L375.85,202.28 L380.80,193.33 L385.75,184.61 L390.70,176.18 L395.65,168.07 L400.60,160.32 L405.55,152.95 L410.50,145.99 L415.45,139.43 L420.40,133.30 L425.35,127.58 L430.30,122.28 L435.25,117.38 L440.20,112.86 L445.15,108.71 L450.10,104.91 L455.05,101.44 L460.00,98.29 L464.95,95.42 L469.90,92.82 L474.85,90.47 L479.80,88.34 L484.75,86.43 L489.70,84.70 L494.65,83.15 L499.60,81.75 L504.55,80.50 L509.50,79.38 L514.45,78.37 L519.40,77.47 L524.35,76.67 L529.30,75.95 L534.25,75.30 L539.20,74.73 L544.15,74.21 L549.10,73.76 L554.05,73.35 L559.00,72.98 L563.95,72.66 L568.90,72.37 L573.85,72.11 L578.80,71.88 L583.75,71.67 L588.70,71.49 L593.65,71.32 L598.60,71.18 L603.55,71.05 L608.50,70.93 L613.45,70.83 L618.40,70.74 L623.35,70.66 L628.30,70.59 L633.25,70.52 L638.20,70.46 L643.15,70.41 L648.10,70.37 L653.05,70.33 L658.00,70.29"/><path id="curve-c" stroke="#78918b" d="M64.00,386.48 L68.95,386.21 L73.90,385.92 L78.85,385.61 L83.80,385.27 L88.75,384.91 L93.70,384.52 L98.65,384.10 L103.60,383.65 L108.55,383.17 L113.50,382.65 L118.45,382.09 L123.40,381.49 L128.35,380.85 L133.30,380.15 L138.25,379.41 L143.20,378.62 L148.15,377.76 L153.10,376.85 L158.05,375.87 L163.00,374.82 L167.95,373.70 L172.90,372.50 L177.85,371.22 L182.80,369.85 L187.75,368.39 L192.70,366.82 L197.65,365.16 L202.60,363.38 L207.55,361.50 L212.50,359.49 L217.45,357.35 L222.40,355.09 L227.35,352.69 L232.30,350.14 L237.25,347.45 L242.20,344.61 L247.15,341.61 L252.10,338.45 L257.05,335.12 L262.00,331.62 L266.95,327.96 L271.90,324.12 L276.85,320.11 L281.80,315.93 L286.75,311.57 L291.70,307.05 L296.65,302.36 L301.60,297.50 L306.55,292.49 L311.50,287.34 L316.45,282.04 L321.40,276.61 L326.35,271.06 L331.30,265.40 L336.25,259.65 L341.20,253.82 L346.15,247.92 L351.10,241.98 L356.05,236.00 L361.00,230.00 L365.95,224.00 L370.90,218.02 L375.85,212.08 L380.80,206.18 L385.75,200.35 L390.70,194.60 L395.65,188.94 L400.60,183.39 L405.55,177.96 L410.50,172.66 L415.45,167.51 L420.40,162.50 L425.35,157.64 L430.30,152.95 L435.25,148.43 L440.20,144.07 L445.15,139.89 L450.10,135.88 L455.05,132.04 L460.00,128.38 L464.95,124.88 L469.90,121.55 L474.85,118.39 L479.80,115.39 L484.75,112.55 L489.70,109.86 L494.65,107.31 L499.60,104.91 L504.55,102.65 L509.50,100.51 L514.45,98.50 L519.40,96.62 L524.35,94.84 L529.30,93.18 L534.25,91.61 L539.20,90.15 L544.15,88.78 L549.10,87.50 L554.05,86.30 L559.00,85.18 L563.95,84.13 L568.90,83.15 L573.85,82.24 L578.80,81.38 L583.75,80.59 L588.70,79.85 L593.65,79.15 L598.60,78.51 L603.55,77.91 L608.50,77.35 L613.45,76.83 L618.40,76.35 L623.35,75.90 L628.30,75.48 L633.25,75.09 L638.20,74.73 L643.15,74.39 L648.10,74.08 L653.05,73.79 L658.00,73.52"/></g><line id="observation-line" x1="361" y1="58" x2="361" y2="390" class="observation-line"/><g id="observation-dots"><circle r="6" cx="361" cy="230" fill="#416b57"/><circle r="5" cx="361" cy="230" fill="#b76a51"/><circle r="3" cx="361" cy="230" fill="#78918b"/></g><g id="intersection-label"><rect x="380" y="177" width="157" height="34" rx="1"/><text x="393" y="199">同一个点，不同的过程</text></g></svg><div class="plot-legend"><span><i class="legend-dot green"></i>A · 缓慢生长</span><span><i class="legend-dot rust"></i>B · 快速生长</span><span><i class="legend-dot gray"></i>C · 你设定的曲线</span></div><figcaption class="model-caption">概念演示 / Illustrative model — not empirical data</figcaption></figure>
-  <div class="experiment-controls"><span class="tiny-label">TRY A DIFFERENT POSSIBILITY</span><h3>同样的此刻，<br>不同的来路。</h3><p>三条曲线共享上限 <i>K</i> = 100 与拐点 <i>t</i>₀ = 5。在拐点都经过 50，生长速度却各不相同。试着移开观测线。</p><div class="interactive"><label class="range-label" for="growth-rate">曲线 C · 生长速率 <i>r</i><output id="growth-rate-value" for="growth-rate">0.90</output></label><input type="range" id="growth-rate" min="0.3" max="1.8" step="0.01" value="0.9"><label class="range-label" for="observation-time">观测时间 <i>t</i><output id="observation-time-value" for="observation-time">5.0</output></label><input type="range" id="observation-time" min="0" max="10" step="0.1" value="5"><div class="observation-values" aria-label="当前三条曲线的观测值"><span>A <output id="value-a">50.0</output></span><span>B <output id="value-b">50.0</output></span><span>C <output id="value-c">50.0</output></span></div><p class="result-insight" id="growth-insight" role="status">在 t = 5，三条曲线重合于 50；单凭这个点无法区分生长速率。</p><button type="button" id="reset-growth" class="text-button">重置实验 <span aria-hidden="true">↺</span></button></div><noscript><p class="result-insight">在 t = 5，任意正速率的这类曲线都经过 50；开启 JavaScript 可操作实验。</p></noscript></div></div>
-  <div class="science-note"><span class="note-symbol" aria-hidden="true">ƒ</span><div><h3>把生长过程，放进遗传分析。</h3><p>功能作图将描述发育过程的数学模型嵌入遗传定位框架，研究遗传效应如何随时间展开。真实分析还需要基因型、纵向测量和统计推断；上面的曲线只用于解释思想，不执行基因定位。<a class="source-ref" href="https://doi.org/10.1093/genetics/161.4.1751" aria-label="来源：2002 年功能作图论文">[1]</a><a class="source-ref" href="https://doi.org/10.1038/nrg1804" aria-label="来源：2006 年功能作图文章">[2]</a></p></div><div class="formula-block" aria-label="Logistic 生长函数">y(t) = <span class="fraction"><span>K</span><span>1 + e<sup>−r(t−t₀)</sup></span></span><small>一个可解释的教学模型</small></div></div>
+<section class="epigraph">
+  <blockquote class="reveal">生命不是一张快照，<br>而是一条<span>曲线</span>。</blockquote>
+  <div class="en reveal">Life is a process — understanding it is a journey.</div>
+  <div class="rule"></div>
 </section>
 
-<section class="interactions dark section-pad" id="interactions" aria-labelledby="network-title"><div class="chapter-heading"><span class="chapter-number">03</span><span class="eyebrow">A WORLD OF INTERACTIONS</span><span class="section-index">RELATION / G</span></div><div class="section-title-row"><h2 id="network-title">没有一种生长，<br>发生在孤岛。</h2><p>从各自的轨迹，到共同的系统。<br>向下滚动，让关系逐渐浮现。</p></div>
-  <div class="network-scroll"><div class="network-sticky"><div class="network-stage"><div class="stage-topline"><span class="tiny-label" id="morph-label">01 — 独立轨迹</span><span class="tiny-label">GENES → CELLS → PHENOTYPES</span></div><canvas id="network-morph" aria-hidden="true" hidden></canvas><svg id="network-svg" viewBox="0 0 900 510" role="group" aria-labelledby="network-svg-title network-svg-desc"><title id="network-svg-title">三层有向相互作用网络</title><desc id="network-svg-desc">9 个合成节点连接基因、细胞和性状三个层次。实线箭头为正作用，虚线截线为负作用。开启 JavaScript 后可点击节点；也可用下方下拉菜单与键盘选择。</desc><defs><marker id="positive-arrow" markerWidth="12" markerHeight="12" refX="44" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1L11 6L1 11" fill="none" stroke="#b7d6bc" stroke-width="1.3"/></marker><marker id="negative-bar" markerWidth="10" markerHeight="12" refX="42" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M7 1V11" stroke="#e4a38b" stroke-width="1.8"/></marker></defs><g id="network-edges"></g><g id="network-nodes"></g><g class="layer-labels"><text x="160" y="484">I / 基因</text><text x="450" y="484">II / 细胞</text><text x="740" y="484">III / 性状</text></g></svg><noscript><img src="assets/network-study.svg" width="900" height="510" alt="三层合成网络，包含基因、细胞、性状节点以及正负作用连线"></noscript><div class="network-legend"><span><i class="line-sample positive"></i>正作用 +</span><span><i class="line-sample negative"></i>负作用 −</span><span>箭头方向：作用的来源 → 接受者</span></div></div><aside class="network-inspector"><span class="tiny-label">READ THE RELATIONSHIPS</span><label for="node-select" class="interactive select-label">选择一个节点</label><select id="node-select" class="interactive"><option value="G1">G₁ · 基因节点</option><option value="G2">G₂ · 基因节点</option><option value="G3">G₃ · 基因节点</option><option value="C1">C₁ · 细胞节点</option><option value="C2" selected>C₂ · 细胞节点</option><option value="C3">C₃ · 细胞节点</option><option value="P1">P₁ · 性状节点</option><option value="P2">P₂ · 性状节点</option><option value="P3">P₃ · 性状节点</option></select><div id="node-details" role="status"><h3>C₂ <span>细胞节点</span></h3><p>这个节点同时接受输入，并对其他节点产生作用。关系的方向与符号同样重要。</p><ul class="edge-list"><li>G₂ → C₂ <b>+0.7</b></li><li>G₁ → C₂ <b class="negative-weight">−0.3</b></li><li>C₁ → C₂ <b class="negative-weight">−0.4</b></li><li>C₂ → C₃ <b>+0.5</b></li><li>C₂ → P₂ <b>+0.6</b></li><li>C₂ → P₁ <b class="negative-weight">−0.2</b></li></ul></div><p class="inspector-note">点选图中节点，或用菜单探索。<br>边权为人为设定的无量纲系数。</p></aside></div></div>
-  <div class="network-explanation"><div><span class="tiny-label">QUASI-DYNAMIC NETWORKS</span><h3>看见连接，<br>也追问连接如何起作用。</h3></div><div><p>邬荣领教授与合作者将进化博弈、尺度规律和动态系统等方法结合，探索有向、有符号、加权的生物相互作用网络。准动态模型中的排序轴不必等同于真实时间；模型推断的联系也需要进一步的生物学检验。<a class="source-ref" href="https://doi.org/10.1016/j.physrep.2023.07.006" aria-label="来源：2023 年 Physics Reports 论文">[3]</a></p><details class="model-details"><summary>这张图能说明什么？ <span aria-hidden="true">＋</span></summary><p>以广义 Lotka–Volterra 形式 dxᵢ/dt = xᵢ(aᵢ + Σⱼ bᵢⱼxⱼ) 为例，在其他量固定且状态非负时，bᵢⱼ 的正负可表示 j 对 i 增长项的促进或抑制。本图仅展示固定关系，不求解方程，不构成因果证据。滚动变形是视觉叙事，不是从曲线推断网络的算法。</p></details></div></div><p class="model-caption">概念演示 / Illustrative model — not empirical data</p>
+<section class="portrait" id="man">
+  <div class="pframe reveal">
+    <canvas id="phyllo" aria-hidden="true"></canvas>
+    <img id="pimg" src="assets/wu.webp" alt="邬荣领教授肖像" loading="lazy" width="800" height="1200">
+  </div>
+  <div class="ptext reveal">
+    <div class="kicker">The Scholar</div>
+    <h2>统计学家<br><em>·</em>数学生物学家<br><em>·</em>跨界者</h2>
+    <p>从南京林业大学的林业遗传学出发，到华盛顿大学攻读数量遗传学博士，他的研究始终围绕同一个问题：复杂性状背后的遗传规律，如何用数学说清楚？</p>
+    <p>他和合作者把生长曲线的数学参数嵌进基因定位框架，这就是“功能作图”；后来又把视野扩展到基因、细胞与性状之间的相互作用网络、计算医学，以及统计学与人工智能的理论联系。</p>
+    <dl class="aff">
+      <div><dt>北京雁栖湖应用数学研究院</dt><dd>研究员 · BIMSA</dd></div>
+      <div><dt>清华大学丘成桐数学科学中心</dt><dd>曾思明讲座教授 · YMSC</dd></div>
+    </dl>
+    <div class="sig">Rongling Wu</div>
+  </div>
 </section>
 
-<section class="atlas paper section-pad" id="atlas" aria-labelledby="atlas-title"><div class="chapter-heading"><span class="chapter-number">04</span><span class="eyebrow">RESEARCH ATLAS</span><span class="section-index">IDEAS IN CONNECTION</span></div><div class="section-title-row"><h2 id="atlas-title">沿着一个问题，<br>走向另一片风景。</h2><p>五个入口，一条相互连接的研究路径。<br>点击展开，阅读问题、方法与出处。</p></div><div class="atlas-list">
-  <details class="atlas-item" open><summary><span class="atlas-index">01</span><span><strong>生长有其遗传的节奏</strong><small>FUNCTIONAL MAPPING & QUANTITATIVE GENETICS</small></span><span class="atlas-plus" aria-hidden="true">＋</span></summary><div class="atlas-body"><div><span class="tiny-label">THE QUESTION</span><p>遗传变异影响的，究竟是最终的大小，还是发育过程中的速度、时机与形状？</p></div><div><span class="tiny-label">THE IDEA</span><p>用曲线参数描述连续性状，再将其纳入遗传定位模型。Ma、Casella 与 Wu 的 2002 年研究建立了功能作图的理论框架，2006 年 Wu 与 Lin 的文章进一步讨论动态复杂性状。</p><a class="inline-link" href="https://doi.org/10.1093/genetics/161.4.1751">Genetics · 2002 <span aria-hidden="true">↗</span></a><a class="inline-link" href="https://doi.org/10.1038/nrg1804">Nature Reviews Genetics · 2006 <span aria-hidden="true">↗</span></a><p class="connection">关联 → 数量遗传学 / 发育过程 / 动态网络</p></div></div></details>
-  <details class="atlas-item"><summary><span class="atlas-index">02</span><span><strong>从共同变化到相互作用</strong><small>QUASI-DYNAMIC NETWORKS</small></span><span class="atlas-plus" aria-hidden="true">＋</span></summary><div class="atlas-body"><div><span class="tiny-label">THE QUESTION</span><p>细胞之间如何合作、竞争，又如何共同塑造肿瘤微环境？</p></div><div><span class="tiny-label">THE IDEA</span><p>2023 年 Sang、Feng、Dong、Gragnoli、Griffin 与 Wu 的综述介绍准动态博弈图理论，将生态、进化博弈与广义 Lotka–Volterra 形式结合，研究细胞间作用的方向、符号与强度。</p><a class="inline-link" href="https://doi.org/10.1016/j.physrep.2023.07.006">Physics Reports · 2023 <span aria-hidden="true">↗</span></a><p class="connection">关联 → 功能作图 / 进化博弈 / 系统医学</p></div></div></details>
-  <details class="atlas-item"><summary><span class="atlas-index">03</span><span><strong>当数据本身就是一张图</strong><small>GRAPH STATISTICS</small></span><span class="atlas-plus" aria-hidden="true">＋</span></summary><div class="atlas-body"><div><span class="tiny-label">THE QUESTION</span><p>如果重要的信息存在于连接结构中，统计学应如何描述这些非欧几里得数据？</p></div><div><span class="tiny-label">THE IDEA</span><p>Wu 与 Yau 的 2026 年预印本讨论图统计，将图论、拓扑数据分析和准动态非线性建模等视角联系起来，探索以网络关系组织数据的统计分析。</p><a class="inline-link" href="https://arxiv.org/abs/2607.10324v2">arXiv · 2026 · 预印本 <span aria-hidden="true">↗</span></a><p class="connection">关联 → 网络结构 / 非欧几里得数据 / 人工智能</p></div></div></details>
-  <details class="atlas-item"><summary><span class="atlas-index">04</span><span><strong>让群体规律走近个体</strong><small>COMPUTATIONAL MEDICINE</small></span><span class="atlas-plus" aria-hidden="true">＋</span></summary><div class="atlas-body"><div><span class="tiny-label">THE QUESTION</span><p>群体层面的遗传信息，如何帮助刻画不同个体的基因相互作用？</p></div><div><span class="tiny-label">THE IDEA</span><p>2026 年 IdopNetworks 合作论文讨论将功能作图与进化博弈结合的准动态框架，探索个体化的遗传网络及精准医学应用。这是建模研究与转化方向，不是已验证的治疗建议。</p><a class="inline-link" href="https://doi.org/10.1016/j.drudis.2026.104733">Drug Discovery Today · 2026 <span aria-hidden="true">↗</span></a><p class="connection">关联 → 个体化基因组学 / 动态网络 / 药物研究</p></div></div></details>
-  <details class="atlas-item"><summary><span class="atlas-index">05</span><span><strong>让学习有可追问的依据</strong><small>STATISTICAL FOUNDATIONS OF AI</small></span><span class="atlas-plus" aria-hidden="true">＋</span></summary><div class="atlas-body"><div><span class="tiny-label">THE QUESTION</span><p>算法给出预测之后，我们怎样理解它的推断依据、假设与适用边界？</p></div><div><span class="tiny-label">THE IDEA</span><p>在 2024 年清华学术报告中，邬荣领教授讨论统计学与人工智能的理论联系，以及统计推理对可解释性的作用。它为理解 AI 提供研究视角，不意味着已有统一理论解决所有问题。</p><a class="inline-link" href="https://qzc.tsinghua.edu.cn/info/1193/5587.htm">清华大学 · 学术报告 · 2024 <span aria-hidden="true">↗</span></a><p class="connection">关联 → 统计推断 / 图统计 / 可解释性</p></div></div></details>
-  </div></section>
+<section style="padding-top:0">
+  <div class="stats reveal">
+    <div class="stat"><div class="n">1995</div><div class="l">华盛顿大学 · 数量遗传学博士</div></div>
+    <div class="stat"><div class="n">2002</div><div class="l">提出功能作图理论框架</div></div>
+    <div class="stat"><div class="n">2006</div><div class="l">Nature Reviews Genetics 观点文章</div></div>
+    <div class="stat"><div class="n">2022</div><div class="l">加入 BIMSA</div></div>
+  </div>
+</section>
 
-<section class="works paper section-pad" id="works" aria-labelledby="works-title"><div class="chapter-heading"><span class="chapter-number">05</span><span class="eyebrow">SELECTED WORKS</span><span class="section-index">2002 — 2026</span></div><div class="section-title-row"><h2 id="works-title">思想，落在纸上。</h2><div class="work-filters interactive" role="group" aria-label="筛选论文类型"><button type="button" data-filter="all" aria-pressed="true">全部 <span>05</span></button><button type="button" data-filter="published" aria-pressed="false">已发表 <span>04</span></button><button type="button" data-filter="preprint" aria-pressed="false">预印本 <span>01</span></button></div></div><p class="works-intro">五篇代表性合作成果，依时间排列。保留每位作者的署名，让研究回到它的出处。</p><div class="works-list">
-  <article class="work" data-kind="published"><span class="work-year">2002</span><div><span class="work-journal">GENETICS <span>161(4) · 1751–1762</span></span><h3><a href="https://doi.org/10.1093/genetics/161.4.1751">Functional Mapping of Quantitative Trait Loci Underlying the Character Process: A Theoretical Framework<span aria-hidden="true">↗</span></a></h3><p class="work-authors">Chang-Xing Ma · George Casella · Rongling Wu</p><p class="work-description">把性状的连续变化纳入遗传定位的理论框架。 <a class="abstract-link" href="https://pubmed.ncbi.nlm.nih.gov/12196415/">PubMed 摘要 ↗</a></p></div><span class="work-type">已发表</span></article>
-  <article class="work" data-kind="published"><span class="work-year">2006</span><div><span class="work-journal">NATURE REVIEWS GENETICS <span>7 · 229–237</span></span><h3><a href="https://doi.org/10.1038/nrg1804">Functional mapping — how to map and study the genetic architecture of dynamic complex traits<span aria-hidden="true">↗</span></a></h3><p class="work-authors">Rongling Wu · Min Lin</p><p class="work-description">动态复杂性状的遗传结构与功能作图。期刊类型：Opinion。</p></div><span class="work-type">已发表</span></article>
-  <article class="work" data-kind="published"><span class="work-year">2023</span><div><span class="work-journal">PHYSICS REPORTS <span>1029 · 1–51</span></span><h3><a href="https://doi.org/10.1016/j.physrep.2023.07.006">The genomic physics of tumor–microenvironment crosstalk<span aria-hidden="true">↗</span></a></h3><p class="work-authors">Mengmeng Sang · Li Feng · Ang Dong · Claudia Gragnoli · Christopher Griffin · Rongling Wu</p><p class="work-description">以准动态博弈图理论探索细胞间的有向、有符号相互作用。</p></div><span class="work-type">已发表</span></article>
-  <article class="work" data-kind="published"><span class="work-year">2026</span><div><span class="work-journal">DRUG DISCOVERY TODAY <span>31(4) · 104733</span></span><h3><a href="https://doi.org/10.1016/j.drudis.2026.104733">IdopNetworks: How to infer the individualized genetic architecture of genomics for precision medicine<span aria-hidden="true">↗</span></a></h3><p class="work-authors">Shuang Wu · Wenqi Pan · Yu Wang · Yihan Meng · Shing-Tung Yau · Rongling Wu</p><p class="work-description">从群体信息探索个体化的遗传相互作用网络。</p></div><span class="work-type">已发表</span></article>
-  <article class="work" data-kind="preprint"><span class="work-year">2026</span><div><span class="work-journal">ARXIV <span>2607.10324v2 · 14 JUL 2026</span></span><h3><a href="https://arxiv.org/abs/2607.10324v2">Graph statistics: An emerging discipline in non-Euclidean data analysis<span aria-hidden="true">↗</span></a></h3><p class="work-authors">Rongling Wu · Shing-Tung Yau</p><p class="work-description">图统计的理论联系与研究愿景。此处列为预印本。</p></div><span class="work-type preprint">预印本</span></article>
-  </div><div class="works-bottom"><p id="works-count" class="tiny-label" role="status">显示 5 篇精选成果</p><a class="inline-link" href="https://www.bimsa.cn/detail/ronglingwu.html">在 BIMSA 查看更多论文 <span aria-hidden="true">↗</span></a></div></section>
+<section id="lab">
+  <div class="kicker reveal">Chapter I · Dynamics</div>
+  <h2 class="reveal">一个时刻，<em>不够</em>。</h2>
+  <p class="lead reveal">三条生长曲线有相同的上限，也在同一时刻到达一半。只看那一个时刻的测量值，你分不出它们；看完整的轨迹，差别一目了然。功能作图的出发点，就是把整条曲线当作性状本身。</p>
+  <div class="lab reveal">
+    <canvas id="curves" aria-label="三条 Logistic 生长曲线与可拖动的观测时刻"></canvas>
+    <div class="ctrl">
+      <div class="eq"><i>y</i>(<i>t</i>) = <i>K</i> ⁄ (1 + e<sup>−<i>r</i>(<i>t</i>−<i>t</i>₀)</sup>)</div>
+      <label for="tObs">观测时刻 t = <span id="tVal">7.0</span></label>
+      <input id="tObs" type="range" min="0" max="100" value="70">
+      <label for="spread">生长速率差异</label>
+      <input id="spread" type="range" min="10" max="100" value="60">
+      <div class="readout" id="readout"></div>
+      <div class="verdict" id="verdict"></div>
+      <div class="fine">概念演示 · Illustrative model — not empirical data。K = 100，t₀ = 5。</div>
+    </div>
+  </div>
+</section>
 
-<section class="journey section-pad" id="journey" aria-labelledby="journey-title"><div class="chapter-heading"><span class="chapter-number">06</span><span class="eyebrow">AN ACADEMIC JOURNEY</span><span class="section-index">A CONTINUING INQUIRY</span></div><div class="journey-layout"><div class="journey-heading"><h2 id="journey-title">在学科之间，<br>持续行走。</h2><p>从数量遗传学，走向统计学、数学生物学与计算医学。不同领域的交汇，构成持续展开的研究路径。</p><a class="inline-link" href="https://www.bimsa.cn/zh-CN/detail/ronglingwu.html">教育与工作经历来源 <span aria-hidden="true">↗</span></a></div><ol class="timeline"><li><time datetime="1984">1984</time><div><h3>南京林业大学 · 学士</h3><p>1980–1984 年本科阶段。</p></div></li><li><time datetime="1987">1987</time><div><h3>南京林业大学 · 硕士</h3><p>1984–1987 年，林业遗传学。</p></div></li><li><time datetime="1995">1995</time><div><h3>华盛顿大学 · 博士</h3><p>1990–1995 年，数量遗传学。<br>University of Washington, Seattle</p></div></li><li><time datetime="2000">2000</time><div><h3>佛罗里达大学</h3><p>开始担任助理教授。</p></div></li><li><time datetime="2008">2008</time><div><h3>宾夕法尼亚州立大学</h3><p>开始担任统计学与公共卫生科学教授。</p></div></li><li><time datetime="2022">2022</time><div><h3>北京雁栖湖应用数学研究院</h3><p>加入 BIMSA，担任研究员。</p></div></li></ol></div></section>
+<section id="network">
+  <div class="kicker reveal">Chapter II · Interactions</div>
+  <h2 class="reveal">相互<em>之间</em>。</h2>
+  <p class="lead reveal">基因作用于细胞，细胞塑造性状，它们之间有促进也有抑制。准动态网络方法把进化博弈、尺度规律与广义 Lotka–Volterra 类模型结合起来，刻画有向、有符号、带权重的相互作用。点击节点，查看它的入边与出边。</p>
+  <div class="netwrap reveal">
+    <canvas id="net" aria-label="基因、细胞、性状三层示意网络"></canvas>
+    <div class="ninfo" id="ninfo"></div>
+  </div>
+  <p class="fine reveal" style="margin-top:28px">示意网络：9 个节点、12 条有向有符号边，边权为人为指定。图中的方程 d<i>x</i>ᵢ/d<i>t</i> = <i>x</i>ᵢ(<i>a</i>ᵢ + Σⱼ <i>b</i>ᵢⱼ<i>x</i>ⱼ) 只用来说明正负系数的含义，页面不求解它，这张图也不构成因果证据。参见 Physics Reports 2023。</p>
+</section>
 
-<section class="scholar paper section-pad" id="scholar" aria-labelledby="scholar-title"><div class="chapter-heading"><span class="chapter-number">07</span><span class="eyebrow">THE SCHOLAR</span><span class="section-index">RONGLING WU</span></div><div class="scholar-layout"><figure class="scholar-figure"><img src="assets/scholar-study.svg" width="600" height="680" loading="lazy" alt="原创科学图版：多个 Logistic 轨迹围绕一个交汇点展开，下方分层网络呈现关系结构"><figcaption><span>PLATE 02 / A PORTRAIT IN IDEAS</span><small>以研究思想作肖像。人物照片待取得公开复用许可后使用。</small></figcaption></figure><div class="scholar-copy"><p class="tiny-label">STATISTICIAN · INTERDISCIPLINARY EXPLORER</p><h2 id="scholar-title">邬荣领<span>Rongling Wu</span></h2><p class="scholar-lead">在数学与生命科学的交汇处，<br>探索复杂性状背后的规律。</p><p>邬荣领教授于 1995 年获华盛顿大学数量遗传学博士学位。其研究以跨学科统计方法为线索，关注复杂性状与复杂疾病的遗传机制。<a class="source-ref" href="https://www.bimsa.cn/detail/ronglingwu.html" aria-label="来源：BIMSA 人物简介">[B]</a></p><dl class="affiliations"><div><dt>北京雁栖湖应用数学研究院</dt><dd>研究员 · BIMSA</dd></div><div><dt>清华大学丘成桐数学科学中心</dt><dd>曾思明讲座教授 · YMSC</dd></div></dl><p class="research-tags">应用统计学 / 数学生物学 / 计算医学</p><a class="round-link" href="https://www.bimsa.cn/zh-CN/detail/ronglingwu.html"><span>阅读官方学者介绍</span><span class="circle-arrow" aria-hidden="true">↗</span></a></div></div></section>
+<section id="atlas">
+  <div class="kicker reveal">Research Atlas</div>
+  <h2 class="reveal">研究<em>·</em>图谱</h2>
+  <div class="atlas reveal">
+    <div class="cell"><div class="no">01</div><h3>功能作图与数量遗传学</h3><div class="en">Functional Mapping</div><div class="q">trait = curve(<i>t</i>; <i>θ</i><sub>genotype</sub>)</div><p>把发育过程的数学模型嵌入遗传定位框架，研究随时间变化的遗传效应。实际定位仍然需要基因型数据、纵向测量和统计推断。</p><a href="https://doi.org/10.1093/genetics/161.4.1751">Genetics 2002 ↗</a></div>
+    <div class="cell"><div class="no">02</div><h3>准动态网络与肿瘤微环境</h3><div class="en">Quasi-dynamic Networks</div><div class="q">d<i>x</i>ᵢ/d<i>t</i> = <i>x</i>ᵢ(<i>a</i>ᵢ + Σ<i>b</i>ᵢⱼ<i>x</i>ⱼ)</div><p>描述肿瘤与微环境之间的“基因组物理学”交互。排序轴不必是真实时间，拟合出的网络也不自动等于已证实的因果机制。</p><a href="https://doi.org/10.1016/j.physrep.2023.07.006">Physics Reports 2023 ↗</a></div>
+    <div class="cell yau"><div class="no">03 · 与丘成桐合作</div><h3>图统计</h3><div class="en">Graph Statistics</div><div class="q">data ∈ non-Euclidean</div><p>面向按连接关系组织的非欧几里得数据。这是与丘成桐先生合作的预印本里提出的研究视角，尚未经过期刊同行评审。</p><a href="https://arxiv.org/abs/2607.10324v2">arXiv 2026 ↗</a> &nbsp; <a href="../Yau/">走进丘先生的纪念碑 ↗</a></div>
+    <div class="cell"><div class="no">04</div><h3>计算医学</h3><div class="en">Individualized Genetic Networks</div><div class="q">population → individual</div><p>探索从群体数据推断个体遗传相互作用结构，并用于精准医学。这是研究方法和转化愿景，不是已验证的治疗建议。</p><a href="https://doi.org/10.1016/j.drudis.2026.104733">Drug Discovery Today 2026 ↗</a></div>
+    <div class="cell"><div class="no">05</div><h3>人工智能的统计学基础</h3><div class="en">Statistical Foundations of AI</div><div class="q">inference · assumptions · interpretability</div><p>2024 年在清华的学术报告中，讨论统计推理与人工智能可解释性之间的理论联系。</p><a href="https://qzc.tsinghua.edu.cn/info/1193/5587.htm">清华 · 学术报告 2024 ↗</a></div>
+    <div class="cell"><div class="no">∞</div><h3>还有更多</h3><div class="en">The inquiry continues</div><div class="q">gene → cell → trait → ?</div><p>这里只选了五个方向。完整的论文与研究，请看官方学者主页。</p><a href="https://www.bimsa.cn/detail/ronglingwu.html">BIMSA 学者主页 ↗</a></div>
+  </div>
+</section>
 
-<section class="explore dark section-pad" id="explore" aria-labelledby="explore-title"><div class="chapter-heading"><span class="chapter-number">08</span><span class="eyebrow">CONTINUE EXPLORING</span><span class="section-index">THE INQUIRY CONTINUES</span></div><div class="explore-layout"><div><h2 id="explore-title">每一个答案，<br>都通向新的问题。</h2><p class="explore-english">Keep asking.<br><em>Keep discovering.</em></p></div><div class="explore-links"><a href="https://www.bimsa.cn/detail/ronglingwu.html"><span><small>01 / OFFICIAL PROFILE</small>BIMSA 学者主页</span><span aria-hidden="true">↗</span></a><a href="https://science.psu.edu/stat/people/rxw35"><span><small>02 / ACADEMIC ARCHIVE</small>Penn State 学术档案</span><span aria-hidden="true">↗</span></a><a href="https://qzc.tsinghua.edu.cn/syjx/yjfx/bjyxhyysxyjy/tjx.htm"><span><small>03 / RESEARCH GROUP</small>清华求真书院 · 统计学</span><span aria-hidden="true">↗</span></a><a href="mailto:ronglingwu@bimsa.cn"><span><small>04 / PUBLIC WORK EMAIL</small>ronglingwu@bimsa.cn</span><span aria-hidden="true">↗</span></a><a href="sources.html"><span><small>05 / EDITORIAL TRANSPARENCY</small>来源、模型与素材说明</span><span aria-hidden="true">↗</span></a></div></div><footer class="site-footer"><div><a href="#home" class="footer-mark">RW <span aria-hidden="true">↗</span></a><p>学生独立制作的学术致敬作品。<br>非邬荣领教授或所属机构的官方网站，未经其认可或运营。</p></div><div><p>THE MATHEMATICS OF LIVING SYSTEMS</p><p>资料核查于 2026.11.17 · 原创编辑与交互设计</p><a href="docs/sources.md">完整来源账本 ↗</a></div></footer></section>
-</main>
-<noscript><div class="no-script-note">JavaScript 未启用：所有正文、论文与资料入口均可阅读；参数实验和节点探索需启用 JavaScript。</div></noscript>
+<section id="works">
+  <div class="kicker reveal">Selected Works</div>
+  <h2 class="reveal">精选<em>·</em>论文</h2>
+  <ul class="works reveal">
+    <li><div class="yr">2002</div><div><h3>Functional Mapping of Quantitative Trait Loci Underlying the Character Process: A Theoretical Framework</h3><div class="au">Chang-Xing Ma, George Casella, <b>Rongling Wu</b></div><div class="jr">Genetics 161(4): 1751–1762</div></div><a class="go" href="https://doi.org/10.1093/genetics/161.4.1751">DOI ↗</a></li>
+    <li><div class="yr">2006</div><div><h3>Functional mapping — how to map and study the genetic architecture of dynamic complex traits</h3><div class="au"><b>Rongling Wu</b>, Min Lin</div><div class="jr">Nature Reviews Genetics 7: 229–237 · Opinion</div></div><a class="go" href="https://doi.org/10.1038/nrg1804">DOI ↗</a></li>
+    <li><div class="yr">2023</div><div><h3>The genomic physics of tumor–microenvironment crosstalk</h3><div class="au">Mengmeng Sang, Li Feng, Ang Dong, Claudia Gragnoli, Christopher Griffin, <b>Rongling Wu</b></div><div class="jr">Physics Reports 1029: 1–51</div></div><a class="go" href="https://doi.org/10.1016/j.physrep.2023.07.006">DOI ↗</a></li>
+    <li><div class="yr">2026</div><div><h3>IdopNetworks: How to infer the individualized genetic architecture of genomics for precision medicine</h3><div class="au">Shuang Wu, Wenqi Pan, Yu Wang, Yihan Meng, Shing-Tung Yau, <b>Rongling Wu</b></div><div class="jr">Drug Discovery Today 31(4): 104733</div></div><a class="go" href="https://doi.org/10.1016/j.drudis.2026.104733">DOI ↗</a></li>
+    <li><div class="yr">2026</div><div><h3>Graph statistics: An emerging discipline in non-Euclidean data analysis <span class="pre">预印本</span></h3><div class="au"><b>Rongling Wu</b>, Shing-Tung Yau</div><div class="jr">arXiv:2607.10324v2</div></div><a class="go" href="https://arxiv.org/abs/2607.10324v2">arXiv ↗</a></li>
+  </ul>
+  <p class="fine reveal" style="margin-top:20px">所有成果均为合作研究，作者顺序按原文。更多论文见 <a href="https://www.bimsa.cn/detail/ronglingwu.html">BIMSA 学者主页</a>。</p>
+</section>
+
+<section id="journey">
+  <div class="kicker reveal">Academic Journey</div>
+  <h2 class="reveal">学科<em>之间</em>的行旅</h2>
+  <div class="timeline">
+    <div class="ev reveal"><div class="y">1984</div><div class="d"><h3>南京林业大学 · 学士</h3><p>1980–1984 年本科。</p></div></div>
+    <div class="ev reveal"><div class="y">1987</div><div class="d"><h3>南京林业大学 · 硕士</h3><p>1984–1987 年，林业遗传学。</p></div></div>
+    <div class="ev reveal major"><div class="y">1995</div><div class="d"><h3>华盛顿大学 · 博士</h3><p>1990–1995 年，数量遗传学。University of Washington, Seattle.</p></div></div>
+    <div class="ev reveal"><div class="y">2000</div><div class="d"><h3>佛罗里达大学</h3><p>开始担任助理教授。</p></div></div>
+    <div class="ev reveal major"><div class="y">2002</div><div class="d"><h3>功能作图理论框架发表</h3><p>Genetics, 与 Chang-Xing Ma、George Casella 合作。</p></div></div>
+    <div class="ev reveal"><div class="y">2008</div><div class="d"><h3>宾夕法尼亚州立大学</h3><p>开始担任统计学与公共卫生科学教授。</p></div></div>
+    <div class="ev reveal major"><div class="y">2022</div><div class="d"><h3>北京雁栖湖应用数学研究院</h3><p>加入 BIMSA，担任研究员。</p></div></div>
+  </div>
+</section>
+
+<section id="explore">
+  <div class="kicker reveal">Continue Exploring</div>
+  <h2 class="reveal">每一个答案，<br>都通向<em>新的问题</em>。</h2>
+  <div class="links reveal">
+    <a href="https://www.bimsa.cn/zh-CN/detail/ronglingwu.html"><span><small>OFFICIAL PROFILE</small>BIMSA 学者主页</span><span class="arr">↗</span></a>
+    <a href="https://science.psu.edu/stat/people/rxw35"><span><small>ACADEMIC ARCHIVE</small>Penn State 学术档案</span><span class="arr">↗</span></a>
+    <a href="https://qzc.tsinghua.edu.cn/syjx/yjfx/bjyxhyysxyjy/tjx.htm"><span><small>RESEARCH GROUP</small>清华求真书院 · 统计学</span><span class="arr">↗</span></a>
+    <a href="sources.html"><span><small>EDITORIAL TRANSPARENCY</small>来源、模型与素材说明</span><span class="arr">↗</span></a>
+  </div>
+</section>
+
+<footer>
+  <div>本页为学生独立制作的学术致敬作品 Demo，并非邬荣领教授或其所属机构的官方网站。<br>资料核查于 2026.11.17 · <a href="docs/sources.md">完整来源账本</a> · 交互图形均为合成数据的概念演示。</div>
+  <div>THE MATHEMATICS OF LIVING SYSTEMS<br>Made with respect · Rancho Tao</div>
+</footer>
+
+<script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function fit(cv){ const d = Math.min(devicePixelRatio||1, 2), r = cv.getBoundingClientRect(); cv.width = r.width*d; cv.height = r.height*d; const c = cv.getContext('2d'); c.setTransform(d,0,0,d,0,0); return [r.width, r.height, c]; }
+function watch(el, cb){ let v = false; new IntersectionObserver(es => { v = es[0].isIntersecting; cb && cb(v); }).observe(el); return () => v; }
+const logistic = (t, K, r, t0) => K/(1 + Math.exp(-r*(t - t0)));
+const COLORS = [[111,214,180],[127,195,230],[232,184,109]];
+
+/* ============ HERO: growth landscape ============ */
+(() => {
+  const cv = document.getElementById('growth');
+  let W, H, ctx; const rs = () => [W, H, ctx] = fit(cv); addEventListener('resize', rs); rs();
+  const visible = watch(cv);
+  // seeded RNG for stable layout
+  let s = 7; const rnd = () => (s = (s*16807) % 2147483647)/2147483647;
+  const gauss = () => { let u = 0; for (let i = 0; i < 6; i++) u += rnd(); return u - 3; };
+  const GP = [{K:100,r:1.45,t0:4.2},{K:84,r:1.0,t0:5.0},{K:66,r:0.72,t0:5.9}];
+  const M = innerWidth < 700 ? 60 : 110, S = 64;
+  const ind = [];
+  for (let i = 0; i < M; i++){
+    const g = Math.floor(rnd()*3), p = GP[g];
+    ind.push({ g, z: -1 + 2*rnd(), K: p.K*(1 + .07*gauss()/1.2), r: p.r*(1 + .12*gauss()/1.2), t0: p.t0 + .35*gauss()/1.2 });
+  }
+  const means = GP.map((p, g) => ({ g, z: 0, ...p }));
+  let yaw = -0.55, pitch = 0.42, drag = false, lx = 0, ly = 0, vy = 0;
+  cv.addEventListener('pointerdown', e => { drag = true; lx = e.clientX; ly = e.clientY; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', e => { if (!drag) return; yaw += (e.clientX-lx)*.006; pitch = Math.max(-.1, Math.min(1.2, pitch + (e.clientY-ly)*.005)); vy = (e.clientX-lx)*.0006; lx = e.clientX; ly = e.clientY; });
+  cv.addEventListener('pointerup', () => drag = false);
+  const CYCLE = 9000;
+  function proj(X, Y, Z, cx, cy, S0){
+    const cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    let x1 = cyw*X + syw*Z, z1 = -syw*X + cyw*Z;
+    let y1 = cp*Y - sp*z1, z2 = sp*Y + cp*z1;
+    const f = 4/(4 + z2); return [cx + x1*S0*f, cy - y1*S0*f, z2];
+  }
+  function frame(t){
+    requestAnimationFrame(frame);
+    if (!visible()) return;
+    if (!drag && !reduce){ yaw += vy; vy *= .95; yaw += Math.sin(t*.00012)*.0006; }
+    const ph = reduce ? 1 : Math.min(1, (t % CYCLE)/(CYCLE*.72));
+    const fade = reduce ? 1 : Math.min(1, (CYCLE - (t % CYCLE))/700);
+    const tf = 10*ph;
+    const cx = W > 900 ? W*.58 : W*.5, cy = W > 900 ? H*.5 : H*.4, S0 = Math.min(W, H)*(W > 900 ? .4 : .34);
+    ctx.clearRect(0, 0, W, H);
+    const P = (t, y, z) => proj((t/10 - .5)*2.6, y/100*1.25 - .45, z*1.05, cx, cy, S0);
+    // floor grid
+    ctx.lineWidth = .6;
+    for (let k = 0; k <= 10; k++){ const a = P(k, 0, -1), b = P(k, 0, 1); ctx.strokeStyle = `rgba(111,214,180,${k%5?0.06:0.14})`; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+    for (let k = -2; k <= 2; k++){ const a = P(0, 0, k/2), b = P(10, 0, k/2); ctx.strokeStyle = 'rgba(111,214,180,.06)'; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+    // time front plane
+    const f1 = P(tf, 0, -1), f2 = P(tf, 0, 1);
+    ctx.strokeStyle = `rgba(196,242,226,${.35*fade*(1-ph*.6)})`; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(f1[0],f1[1]); ctx.lineTo(f2[0],f2[1]); ctx.stroke();
+    // individuals sorted by depth
+    const items = ind.map(d => ({ d, depth: P(5, 50, d.z)[2] })).sort((a, b) => b.depth - a.depth);
+    for (const { d, depth } of items){
+      const c = COLORS[d.g], dep = Math.max(.25, Math.min(1, (1.4 - depth)/2.2));
+      ctx.strokeStyle = `rgba(${c},${.42*dep*fade})`; ctx.lineWidth = .9;
+      ctx.beginPath();
+      const n = Math.max(1, Math.floor(S*ph));
+      for (let k = 0; k <= n; k++){ const tt = 10*k/S, q = P(tt, logistic(tt, d.K, d.r, d.t0), d.z); k ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
+      ctx.stroke();
+      const tip = P(tf, logistic(tf, d.K, d.r, d.t0), d.z);
+      ctx.fillStyle = `rgba(${c},${.9*dep*fade})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 1.6, 0, 7); ctx.fill();
+    }
+    // genotype mean curves, glowing
+    for (const m of means){
+      const c = COLORS[m.g]; ctx.lineWidth = 2.4; ctx.shadowColor = `rgb(${c})`; ctx.shadowBlur = 14;
+      ctx.strokeStyle = `rgba(${c},${.95*fade})`; ctx.beginPath();
+      const n = Math.max(1, Math.floor(S*ph));
+      for (let k = 0; k <= n; k++){ const tt = 10*k/S, q = P(tt, logistic(tt, m.K, m.r, m.t0), m.z); k ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
+      ctx.stroke(); ctx.shadowBlur = 0;
+    }
+    // axis labels
+    ctx.fillStyle = 'rgba(124,146,137,.8)'; ctx.font = '12px "Cormorant Garamond",serif';
+    const lt = P(10.3, 0, 1); ctx.fillText('time  t', lt[0], lt[1]);
+    const ly2 = P(0, 104, -1); ctx.fillText('trait  y(t)', ly2[0] - 20, ly2[1]);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ============ Portrait: phyllotaxis halo ============ */
+(() => {
+  const cv = document.getElementById('phyllo'), img = document.getElementById('pimg'), sec = document.getElementById('man');
+  let W, H, ctx; const rs = () => [W, H, ctx] = fit(cv); addEventListener('resize', rs); rs();
+  let born = null; const visible = watch(cv, v => { if (v && born === null) born = performance.now(); });
+  const N = 520, GA = Math.PI*(3 - Math.sqrt(5));
+  (function loop(t){
+    requestAnimationFrame(loop); if (!visible()) return;
+    ctx.clearRect(0, 0, W, H);
+    const shown = reduce ? N : Math.min(N, ((t - (born||t))/3200)*N);
+    const rot = reduce ? 0 : t*.00004, cx = W/2, cy = H/2, R = W*.46;
+    for (let i = 1; i < shown; i++){
+      const r = R*Math.sqrt(i/N), a = i*GA + rot;
+      const x = cx + r*Math.cos(a), y = cy + r*Math.sin(a);
+      const k = i/N, pulse = .5 + .5*Math.sin(t*.0015 - i*.05);
+      ctx.fillStyle = `rgba(111,214,180,${(.10 + .35*(1 - k))*(.6 + .4*pulse)})`;
+      ctx.beginPath(); ctx.arc(x, y, .8 + 2.6*k, 0, 7); ctx.fill();
+    }
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R*.7);
+    g.addColorStop(0, 'rgba(111,214,180,.16)'); g.addColorStop(1, 'rgba(111,214,180,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  })(0);
+  if (!reduce) addEventListener('scroll', () => { const r = sec.getBoundingClientRect(); const k = (r.top + r.height/2 - innerHeight/2)/innerHeight; img.style.transform = `translateY(${k*-36}px)`; }, { passive: true });
+})();
+
+/* ============ Lab: one moment is not enough ============ */
+(() => {
+  const cv = document.getElementById('curves'), tObs = document.getElementById('tObs'), spread = document.getElementById('spread');
+  const out = document.getElementById('readout'), verdict = document.getElementById('verdict'), tVal = document.getElementById('tVal');
+  let W, H, ctx; const K = 100, T0 = 5;
+  const names = ['快速生长', '中速生长', '缓慢生长'];
+  function rates(){ const s = spread.value/100; return [1 + 1.6*s, 1, 1/(1 + 1.6*s)].map(x => x*.9); }
+  function draw(){
+    [W, H, ctx] = fit(cv);
+    const t = tObs.value/10, R = rates(), pad = { l: 46, r: 18, t: 30, b: 36 };
+    const X = tt => pad.l + (W - pad.l - pad.r)*tt/10, Y = y => H - pad.b - (H - pad.t - pad.b)*y/100;
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(111,214,180,.08)'; ctx.lineWidth = 1; ctx.fillStyle = '#5f746c'; ctx.font = '11px "Cormorant Garamond",serif';
+    for (let k = 0; k <= 10; k += 2){ ctx.beginPath(); ctx.moveTo(X(k), Y(0)); ctx.lineTo(X(k), Y(100)); ctx.stroke(); ctx.fillText(k, X(k) - 3, H - 14); }
+    for (let k = 0; k <= 100; k += 25){ ctx.beginPath(); ctx.moveTo(X(0), Y(k)); ctx.lineTo(X(10), Y(k)); ctx.stroke(); ctx.fillText(k, 14, Y(k) + 4); }
+    R.forEach((r, i) => {
+      const c = COLORS[i]; ctx.strokeStyle = `rgb(${c})`; ctx.lineWidth = 2.2; ctx.beginPath();
+      for (let k = 0; k <= 200; k++){ const tt = k/20; const p = [X(tt), Y(logistic(tt, K, r, T0))]; k ? ctx.lineTo(...p) : ctx.moveTo(...p); }
+      ctx.stroke();
+    });
+    ctx.strokeStyle = 'rgba(232,184,109,.8)'; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.moveTo(X(t), Y(0)); ctx.lineTo(X(t), Y(104)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(232,184,109,.9)'; ctx.fillText('观测时刻', X(t) + 6, Y(104) - 4);
+    R.forEach((r, i) => { const y = logistic(t, K, r, T0); ctx.fillStyle = `rgb(${COLORS[i]})`; ctx.shadowColor = `rgb(${COLORS[i]})`; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(X(t), Y(y), 5, 0, 7); ctx.fill(); ctx.shadowBlur = 0; });
+    tVal.textContent = t.toFixed(1);
+    const ys = R.map(r => logistic(t, K, r, T0));
+    out.innerHTML = ys.map((y, i) => `<div><span style="color:rgb(${COLORS[i]})">● ${names[i]}</span><span>${y.toFixed(1)}</span></div>`).join('');
+    const gap = Math.max(...ys) - Math.min(...ys);
+    verdict.className = 'verdict' + (gap < 3 ? ' same' : '');
+    verdict.textContent = gap < 3 ? '在这一刻，三条曲线几乎无法区分。只有一张“快照”，信息是不够的。' : `此刻最大差值为 ${gap.toFixed(1)}。可如果只在 t = 5 测一次呢？试着把观测时刻拖到 5。`;
+  }
+  tObs.addEventListener('input', draw); spread.addEventListener('input', draw); addEventListener('resize', draw); draw();
+})();
+
+/* ============ Network ============ */
+(() => {
+  const cv = document.getElementById('net'), info = document.getElementById('ninfo');
+  let W, H, ctx; const rs = () => [W, H, ctx] = fit(cv); addEventListener('resize', rs); rs();
+  const visible = watch(cv);
+  const LAYERS = ['Genes · 基因', 'Cells · 细胞', 'Traits · 性状'];
+  const nodes = [];
+  ['G1','G2','G3','C1','C2','C3','P1','P2','P3'].forEach((id, i) => nodes.push({ id, layer: Math.floor(i/3), k: i%3 }));
+  const E = [['G1','C1',.8],['G1','C2',-.5],['G2','C2',.7],['G2','C3',.6],['G3','C3',-.7],['G3','C1',.4],['C1','C2',.5],['C1','P1',.9],['C2','P1',-.6],['C2','P2',.8],['C3','P3',.7],['P2','P3',-.4]];
+  const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+  const edges = E.map(([a, b, w]) => ({ a: byId[a], b: byId[b], w }));
+  const parts = []; edges.forEach((e, i) => { for (let k = 0; k < 4; k++) parts.push({ e, u: (k/4 + i*.13) % 1 }); });
+  let sel = byId.C2, hover = null;
+  function pos(n, t){ const x = W*(.16 + .34*n.layer), y = H*(.2 + .3*n.k); return [x + Math.sin(t*.0007 + n.layer*2 + n.k)*6, y + Math.cos(t*.0009 + n.k*3 + n.layer)*6]; }
+  function showInfo(){
+    const ins = edges.filter(e => e.b === sel), outs = edges.filter(e => e.a === sel);
+    const row = (e, other) => `<li><span>${other.id}</span><span class="${e.w > 0 ? 'pos' : 'neg'}">${e.w > 0 ? '促进 +' : '抑制 −'}${Math.abs(e.w).toFixed(1)}</span></li>`;
+    info.innerHTML = `<div class="layer">${LAYERS[sel.layer]}</div><h3>节点 ${sel.id}</h3>
+      <ul>${ins.length ? '<li style="color:var(--dim)"><span>入边 · 谁作用于它</span><span></span></li>' + ins.map(e => row(e, e.a)).join('') : ''}
+      ${outs.length ? '<li style="color:var(--dim)"><span>出边 · 它作用于谁</span><span></span></li>' + outs.map(e => row(e, e.b)).join('') : ''}</ul>`;
+  }
+  showInfo();
+  let last = 0;
+  function pick(ev){ const r = cv.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top; return nodes.find(n => { const p = pos(n, last); return Math.hypot(p[0] - x, p[1] - y) < 26; }); }
+  cv.addEventListener('click', ev => { const n = pick(ev); if (n){ sel = n; showInfo(); } });
+  cv.addEventListener('mousemove', ev => { hover = pick(ev); cv.style.cursor = hover ? 'pointer' : 'default'; });
+  (function loop(t){
+    requestAnimationFrame(loop); if (!visible()) return; last = t;
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = '12px "Cormorant Garamond",serif'; ctx.fillStyle = 'rgba(124,146,137,.8)'; ctx.textAlign = 'center';
+    LAYERS.forEach((l, i) => ctx.fillText(l.toUpperCase(), W*(.16 + .34*i), H*.07));
+    for (const e of edges){
+      const p = pos(e.a, t), q = pos(e.b, t), on = e.a === sel || e.b === sel;
+      const c = e.w > 0 ? '111,214,180' : '238,138,114', bend = e.a.layer === e.b.layer ? 40 : 0;
+      ctx.strokeStyle = `rgba(${c},${on ? .75 : .18})`; ctx.lineWidth = on ? 1.8 : 1; ctx.setLineDash(e.w > 0 ? [] : [5, 5]);
+      ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.quadraticCurveTo((p[0] + q[0])/2 + bend, (p[1] + q[1])/2, q[0], q[1]); ctx.stroke(); ctx.setLineDash([]);
+      e._p = p; e._q = q; e._b = bend; e._on = on; e._c = c;
+    }
+    for (const pt of parts){
+      if (!reduce) pt.u = (pt.u + .0025*(.6 + Math.abs(pt.e.w))) % 1;
+      const e = pt.e, u = pt.u, mx = (e._p[0] + e._q[0])/2 + e._b, my = (e._p[1] + e._q[1])/2;
+      const x = (1-u)*(1-u)*e._p[0] + 2*(1-u)*u*mx + u*u*e._q[0], y = (1-u)*(1-u)*e._p[1] + 2*(1-u)*u*my + u*u*e._q[1];
+      ctx.fillStyle = `rgba(${e._c},${e._on ? .95 : .35})`; ctx.beginPath(); ctx.arc(x, y, e._on ? 2.4 : 1.6, 0, 7); ctx.fill();
+    }
+    for (const n of nodes){
+      const p = pos(n, t), c = COLORS[n.layer], isSel = n === sel, isH = n === hover;
+      ctx.shadowColor = `rgb(${c})`; ctx.shadowBlur = isSel ? 26 : 10;
+      ctx.fillStyle = isSel ? `rgb(${c})` : '#04110e'; ctx.strokeStyle = `rgb(${c})`; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(p[0], p[1], isSel || isH ? 19 : 16, 0, 7); ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
+      ctx.fillStyle = isSel ? '#04110e' : `rgb(${c})`; ctx.font = '600 13px "Noto Serif SC",serif'; ctx.fillText(n.id, p[0], p[1] + 4.5);
+    }
+  })(0);
+})();
+
+/* reveal */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(e => io.observe(e));
+</script>
 </body>
 </html>
