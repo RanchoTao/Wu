@@ -75,8 +75,14 @@ h2 em{font-style:normal;color:var(--jade)}
 /* portrait */
 .portrait{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:clamp(30px,6vw,100px);padding-top:clamp(30px,6vh,70px);min-height:100vh}
 .pframe{position:relative;aspect-ratio:2/3;max-height:90vh;width:100%;max-width:560px;justify-self:center}
-.pframe img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;display:block;will-change:transform}
-#phyllo{position:absolute;z-index:1;left:50%;top:36%;width:150%;aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none}
+.pframe img{position:relative;z-index:3;width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 40px rgba(111,214,180,.12));will-change:transform}
+#phyllo{position:absolute;z-index:1;left:50%;top:34%;width:130%;aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none;opacity:.55}
+.halo{position:absolute;z-index:2;left:50%;top:34%;width:120%;aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none}
+.halo circle,.halo ellipse{fill:none;stroke:var(--jade);stroke-width:.6}
+.halo .spin{transform-origin:200px 200px;animation:spin 90s linear infinite}
+.halo .spin2{transform-origin:200px 200px;animation:spin 140s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.glow{position:absolute;z-index:0;left:50%;top:30%;width:90%;aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(111,214,180,.22),rgba(111,214,180,.05) 45%,transparent 70%);filter:blur(10px)}
 .ptext h2{margin-bottom:34px;line-height:1.5}
 .ptext p{color:#b4c4bd;font-size:16px;margin-bottom:18px;max-width:30em}
 .aff{margin:30px 0 0;border-top:1px solid var(--line)}
@@ -209,7 +215,12 @@ footer a{color:var(--jade)}
 
 <section class="portrait" id="man">
   <div class="pframe reveal">
+    <div class="glow"></div>
     <canvas id="phyllo" aria-hidden="true"></canvas>
+    <svg class="halo" viewBox="0 0 400 400" aria-hidden="true">
+      <g class="spin" opacity=".35"><circle cx="200" cy="200" r="150"/><ellipse cx="200" cy="200" rx="150" ry="52"/><ellipse cx="200" cy="200" rx="52" ry="150"/></g>
+      <g class="spin2" opacity=".18"><circle cx="200" cy="200" r="182" stroke-dasharray="2 6"/><ellipse cx="200" cy="200" rx="182" ry="100" transform="rotate(35 200 200)"/><ellipse cx="200" cy="200" rx="182" ry="100" transform="rotate(-35 200 200)"/></g>
+    </svg>
     <img id="pimg" src="assets/wu.webp" alt="邬荣领教授肖像" loading="lazy" width="800" height="1200">
   </div>
   <div class="ptext reveal">
@@ -417,9 +428,6 @@ const COLORS = [[111,214,180],[127,195,230],[232,184,109]];
       ctx.fillStyle = `rgba(111,214,180,${(.10 + .35*(1 - k))*(.6 + .4*pulse)})`;
       ctx.beginPath(); ctx.arc(x, y, .8 + 2.6*k, 0, 7); ctx.fill();
     }
-    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R*.7);
-    g.addColorStop(0, 'rgba(111,214,180,.16)'); g.addColorStop(1, 'rgba(111,214,180,0)');
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   })(0);
   if (!reduce) addEventListener('scroll', () => { const r = sec.getBoundingClientRect(); const k = (r.top + r.height/2 - innerHeight/2)/innerHeight; img.style.transform = `translateY(${k*-36}px)`; }, { passive: true });
 })();
